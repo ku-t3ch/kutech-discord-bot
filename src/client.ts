@@ -1,6 +1,6 @@
 import 'dotenv/config';
 
-import { Client, Collection, IntentsBitField } from 'discord.js';
+import { Client, Collection, IntentsBitField, Partials } from 'discord.js';
 
 import commands from './commands';
 import events from './events';
@@ -17,7 +17,9 @@ export class Bot extends Client {
       intents: [
         IntentsBitField.Flags.Guilds,
         IntentsBitField.Flags.GuildMessages,
+        IntentsBitField.Flags.GuildMessageReactions,
       ],
+      partials: [Partials.Message, Partials.Reaction],
     });
   }
 
@@ -43,6 +45,8 @@ export class Bot extends Client {
         this.on(handler.eventName, (...args) => handler.execute(this, ...args));
       }
     }
+
+    console.info(`[Handler] ${handlers.length} events registered`);
   }
 
   registerCommands(handlers: CommandHandlerConfig[]) {
