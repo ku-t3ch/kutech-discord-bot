@@ -1,0 +1,8 @@
+[
+  { "emoji": "🟦", "role": "Member" },
+  { "emoji": "🟥", "role": "Moderator" },
+  { "emoji": "🟧", "role": "Editor" },
+  { "emoji": "🟨", "role": "Salim" },
+  { "emoji": "🟩", "role": "Weed" },
+  { "emoji": "🟪", "role": "Server Booster" }
+]
