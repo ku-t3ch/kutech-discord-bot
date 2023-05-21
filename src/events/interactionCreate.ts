@@ -3,6 +3,8 @@ import { EmbedBuilder, Events } from 'discord.js';
 import { keyv } from '../keyv';
 import { defineEventHandler } from '../types/event';
 import { RoleInput } from '../types/roleInput';
+import isEmoji from '../utils/isEmoji';
+import { reactMessage } from '../utils/reactMessage';
 
 export default defineEventHandler({
   eventName: Events.InteractionCreate,
@@ -31,11 +33,23 @@ export default defineEventHandler({
         const roleInput = interaction.fields.getTextInputValue('roleInput');
 
         try {
-          const roles: RoleInput[] = JSON.parse(roleInput);
+          const roles: RoleInput[] | RoleInput = JSON.parse(roleInput);
 
-          const description = roles
-            .map((r) => r.emoji + ' ' + r.role)
-            .join('\n');
+          let description: string;
+
+          if (roles instanceof Array) {
+            description = roles
+              .map((r) => {
+                if (isEmoji(r.emoji)) {
+                  return r.emoji + ' ' + r.role;
+                } else {
+                  throw new Error('Invalid emoji provided');
+                }
+              })
+              .join('\n');
+          } else {
+            description = roles.emoji + ' ' + roles.role;
+          }
 
           const embed = new EmbedBuilder()
             .setDescription(messageInput + '\n' + description)
@@ -46,15 +60,19 @@ export default defineEventHandler({
             fetchReply: true,
           });
 
-          roles.forEach((role) => {
-            message.react(role.emoji);
-          });
+          if (roles instanceof Array) {
+            roles.forEach((role) => {
+              reactMessage(message, role.emoji);
+            });
+          } else {
+            reactMessage(message, roles.emoji);
+          }
 
           // store message id so that it can be used to assign roles based on the specific message only
           keyv.set(message.id, roleInput);
         } catch (error) {
           await interaction.reply({
-            content: 'Error parsing JSON. Please provide a valid JSON data',
+            content: 'Please provide a valid JSON and emoji',
             ephemeral: true,
           });
           console.error(error);
