@@ -1,6 +1,8 @@
 import { Events, TextChannel } from 'discord.js';
 
+import { keyv } from '../keyv';
 import { defineEventHandler } from '../types/event';
+import { RoleInput } from '../types/roleInput';
 
 export default defineEventHandler({
   eventName: Events.MessageReactionAdd,
@@ -15,12 +17,12 @@ export default defineEventHandler({
     }
 
     // Define your roles and emojis here
-    const roleReactions = new Map<string, { emoji: string; role: string }[]>();
+    // const roleReactions = new Map<string, { emoji: string; role: string }[]>();
 
-    roleReactions.set('1109615104447746078', [{ emoji: '✅', role: 'Member' }]);
-    roleReactions.set('1109615438498889798', [
-      { emoji: '✅', role: 'Moderator' },
-    ]);
+    // roleReactions.set('1109615104447746078', [{ emoji: '✅', role: 'Member' }]);
+    // roleReactions.set('1109615438498889798', [
+    //   { emoji: '✅', role: 'Moderator' },
+    // ]);
 
     if (
       !user.bot &&
@@ -29,11 +31,15 @@ export default defineEventHandler({
     ) {
       const messageID = reaction.message.id;
 
-      if (!roleReactions.has(messageID)) return;
+      const storedRole = await keyv.get(messageID);
 
-      const selectedRole = roleReactions
-        .get(messageID)!
-        .find((r) => r.emoji === reaction.emoji.name);
+      if (!storedRole) return;
+
+      const roleReactions: RoleInput[] = JSON.parse(storedRole);
+
+      const selectedRole = roleReactions.find(
+        (r) => r.emoji === reaction.emoji.name
+      );
 
       if (selectedRole) {
         const guild = reaction.message.guild;

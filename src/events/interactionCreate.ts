@@ -1,6 +1,8 @@
 import { EmbedBuilder, Events } from 'discord.js';
 
+import { keyv } from '../keyv';
 import { defineEventHandler } from '../types/event';
+import { RoleInput } from '../types/roleInput';
 
 export default defineEventHandler({
   eventName: Events.InteractionCreate,
@@ -31,8 +33,7 @@ export default defineEventHandler({
         const roleInput = interaction.fields.getTextInputValue('roleInput');
 
         try {
-          const roles: { emoji: string; role: string }[] =
-            JSON.parse(roleInput);
+          const roles: RoleInput[] = JSON.parse(roleInput);
 
           const description = roles
             .map((r) => r.emoji + ' ' + r.role)
@@ -51,7 +52,8 @@ export default defineEventHandler({
             message.react(role.emoji);
           });
 
-          // TODO: store message id somewhere so that it can be used to assign roles based on the specific message only
+          // store message id so that it can be used to assign roles based on the specific message only
+          keyv.set(message.id, roleInput);
         } catch (error) {
           await interaction.reply({
             content: 'Error parsing JSON. Please provide a valid JSON data',
@@ -59,8 +61,6 @@ export default defineEventHandler({
           });
           console.error(error);
         }
-
-        // message.react(roleInput);
       }
     }
   },
