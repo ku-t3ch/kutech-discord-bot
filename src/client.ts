@@ -1,6 +1,12 @@
 import 'dotenv/config';
 
-import { Client, Collection, IntentsBitField, Partials } from 'discord.js';
+import {
+  Client,
+  Collection,
+  CommandInteraction,
+  IntentsBitField,
+  Partials,
+} from 'discord.js';
 
 import commands from './commands';
 import events from './events';

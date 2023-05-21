@@ -23,9 +23,7 @@ export default defineEventHandler({
         console.error(error);
         await interaction.deleteReply();
       }
-    }
-
-    if (interaction.isModalSubmit()) {
+    } else if (interaction.isModalSubmit()) {
       if (interaction.customId === 'roleFormModal') {
         // Get the data entered by the user
         const messageInput =
