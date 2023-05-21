@@ -37,8 +37,10 @@ pnpm dev
 - Run with Docker
 
 ```shell
+# For persist data generate inside docker
+docker volume create kutech-discord-bot-db
 docker build . -t kutech-discord-bot
-docker run -d --env-file=.env --name kutech-discord-bot kutech-discord-bot
+docker run -d --env-file=.env --name kutech-discord-bot --mount source=kutech-discord-bot-db,target=/app kutech-discord-bot
 ```
 
 - Run with Node
@@ -48,3 +50,5 @@ pnpm install
 pnpm build
 pnpm start
 ```
+
+docker run --env-file=.env --name kutech-discord-bot --mount source=kutech-discord-bot-db,target=/app kutech-discord-bot
