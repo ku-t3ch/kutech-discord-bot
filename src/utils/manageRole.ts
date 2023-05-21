@@ -36,15 +36,20 @@ export async function manageRole(
 
     if (!storedRole) return;
 
-    const roleReactions: RoleInput[] = JSON.parse(storedRole);
+    const roleReactions: RoleInput[] | RoleInput = JSON.parse(storedRole);
+    let selectedRole: RoleInput | undefined;
 
-    const selectedRole = roleReactions.find(
-      (r) => r.emoji === reaction.emoji.name
-    );
+    if (roleReactions instanceof Array) {
+      selectedRole = roleReactions.find((r) => r.emoji === reaction.emoji.name);
+    } else {
+      selectedRole = roleReactions;
+    }
 
     if (selectedRole) {
       const guild = reaction.message.guild;
-      const role = guild?.roles.cache.find((r) => r.name === selectedRole.role);
+      const role = guild?.roles.cache.find(
+        (r) => r.name === selectedRole?.role
+      );
       const member = guild?.members.cache.get(user.id);
 
       if (!role) {
