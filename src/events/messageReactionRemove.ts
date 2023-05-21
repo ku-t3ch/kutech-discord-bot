@@ -5,7 +5,7 @@ import { defineEventHandler } from '../types/event';
 import { RoleInput } from '../types/roleInput';
 
 export default defineEventHandler({
-  eventName: Events.MessageReactionAdd,
+  eventName: Events.MessageReactionRemove,
   execute: async (client, reaction, user) => {
     if (!user.bot && reaction.partial) {
       try {
@@ -46,9 +46,9 @@ export default defineEventHandler({
         }
 
         try {
-          await member?.roles.add(role);
+          await member?.roles.remove(role);
           console.log(
-            `[ROLE] Added role ${role?.name} from user ${member?.user.tag}`
+            `[ROLE] Removed role ${role?.name} from user ${member?.user.tag}`
           );
         } catch (error) {
           console.error('Error removing role:', error);
