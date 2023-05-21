@@ -1,12 +1,9 @@
 {
   "compilerOptions": {
-    "composite": true,
-    "target": "es2016",
+    "target": "es2017",
     "module": "commonjs",
     "rootDir": "./src",
     "moduleResolution": "node",
-    "declaration": true,
-    "declarationMap": true,
     "sourceMap": true,
     "outDir": "./dist",
     "esModuleInterop": true,

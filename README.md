@@ -31,3 +31,20 @@ and set all variables
 ```
 pnpm dev
 ```
+
+## Deploy
+
+- Run with Docker
+
+```shell
+docker build . -t kutech-discord-bot
+docker run -d --env-file=.env --name kutech-discord-bot kutech-discord-bot
+```
+
+- Run with Node
+
+```shell
+pnpm install
+pnpm build
+pnpm start
+```
