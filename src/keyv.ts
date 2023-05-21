@@ -1,3 +1,3 @@
 import Keyv from 'keyv';
 
-export const keyv = new Keyv('sqlite://./data/db.sqlite');
+export const keyv = new Keyv(process.env.DATABASE_URL);
