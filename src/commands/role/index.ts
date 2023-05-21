@@ -1,5 +1,6 @@
 import {
   ActionRowBuilder,
+  GuildChannel,
   ModalBuilder,
   TextInputBuilder,
   TextInputStyle,
@@ -13,6 +14,16 @@ export default defineCommandHandler({
     description: 'Make a bot add message to give roles',
   },
   execute: async (client, interaction) => {
+    const channel = interaction.channel as GuildChannel;
+
+    if (channel.id !== process.env.ROLE_CHANNEL_ID) {
+      await interaction.reply({
+        content: 'Command not allowed in this channel',
+        ephemeral: true,
+      });
+      return;
+    }
+
     try {
       // Create the modal
       const modal = new ModalBuilder()
