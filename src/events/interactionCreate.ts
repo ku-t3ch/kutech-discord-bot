@@ -28,8 +28,9 @@ export default defineEventHandler({
     } else if (interaction.isModalSubmit()) {
       if (interaction.customId === 'roleFormModal') {
         // Get the data entered by the user
-        const messageInput =
-          interaction.fields.getTextInputValue('messageInput');
+        const titleInput = interaction.fields.getTextInputValue('titleInput');
+        const descriptionInput =
+          interaction.fields.getTextInputValue('descriptionInput');
         const roleInput = interaction.fields.getTextInputValue('roleInput');
 
         try {
@@ -52,7 +53,8 @@ export default defineEventHandler({
           }
 
           const embed = new EmbedBuilder()
-            .setDescription(messageInput + '\n' + description)
+            .setTitle(titleInput)
+            .setDescription(descriptionInput + '\n\n' + description)
             .setColor('Aqua');
 
           const message = await interaction.reply({
