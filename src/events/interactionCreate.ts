@@ -1,8 +1,8 @@
 import { EmbedBuilder, Events } from 'discord.js';
 
-import { keyv } from '../keyv';
+import { prisma } from '../prisma';
 import { defineEventHandler } from '../types/event';
-import { RoleInput } from '../types/roleInput';
+import { RoleInputs } from '../types/roleInput';
 import isEmoji from '../utils/isEmoji';
 import { reactMessage } from '../utils/reactMessage';
 
@@ -34,22 +34,22 @@ export default defineEventHandler({
         const roleInput = interaction.fields.getTextInputValue('roleInput');
 
         try {
-          const roles: RoleInput[] | RoleInput = JSON.parse(roleInput);
+          const roles = RoleInputs.parse(JSON.parse(roleInput));
 
-          let description: string;
+          let description = '';
 
           if (roles instanceof Array) {
             description = roles
               .map((r) => {
                 if (isEmoji(r.emoji)) {
-                  return r.emoji + ' ' + r.role;
+                  return r.emoji + ' ' + r.name;
                 } else {
                   throw new Error('Invalid emoji provided');
                 }
               })
               .join('\n');
           } else {
-            description = roles.emoji + ' ' + roles.role;
+            description = roles.emoji + ' ' + roles.name;
           }
 
           const embed = new EmbedBuilder().setColor('Aqua');
@@ -78,7 +78,15 @@ export default defineEventHandler({
           }
 
           // store message id so that it can be used to assign roles based on the specific message only
-          keyv.set(message.id, roleInput);
+          await prisma.reactionRoleMessage.create({
+            data: {
+              messageId: message.id,
+              data: JSON.stringify(roles),
+              title: titleInput,
+              description: descriptionInput,
+            },
+          });
+          console.log('[PRISMA] Reaction role message added to database');
         } catch (error) {
           await interaction.reply({
             content: 'Please provide a valid JSON and emoji',

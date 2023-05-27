@@ -17,8 +17,8 @@ export async function removeUserPreviousRoles(
 ) {
   const previousRole = member?.roles.cache.filter((r) =>
     roleReactions instanceof Array
-      ? roleReactions.find((rr) => rr.role == r.name)
-      : roleReactions.role == r.name
+      ? roleReactions.find((rr) => rr.name == r.name)
+      : roleReactions.name == r.name
   );
 
   if (previousRole) {
@@ -27,12 +27,12 @@ export async function removeUserPreviousRoles(
       // Get the `RoleInput`
       const role =
         roleReactions instanceof Array
-          ? roleReactions.find((rr) => rr.role == r.name)
+          ? roleReactions.find((rr) => rr.name == r.name)
           : roleReactions;
 
       if (role) {
         console.log(
-          `[ROLE] ${user.tag} switch role from ${role.emoji} ${role.role} to ${selectedRole?.emoji} ${selectedRole?.role}`
+          `[ROLE] ${user.tag} switch role from ${role.emoji} ${role.name} to ${selectedRole?.emoji} ${selectedRole?.name}`
         );
         // Remove user reactions
         reaction.message.reactions.resolve(role.emoji)?.users.remove(user.id);

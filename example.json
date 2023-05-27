@@ -1,8 +1,8 @@
 [
-  { "emoji": "🟦", "role": "Member" },
-  { "emoji": "🟥", "role": "Moderator" },
-  { "emoji": "🟧", "role": "Editor" },
-  { "emoji": "🟨", "role": "Salim" },
-  { "emoji": "🟩", "role": "Weed" },
-  { "emoji": "🟪", "role": "Server Booster" }
+  { "emoji": "🟦", "name": "Member" },
+  { "emoji": "🟥", "name": "Moderator" },
+  { "emoji": "🟧", "name": "Editor" },
+  { "emoji": "🟨", "name": "Salim" },
+  { "emoji": "🟩", "name": "Weed" },
+  { "emoji": "🟪", "name": "Server Booster" }
 ]

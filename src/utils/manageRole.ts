@@ -7,8 +7,8 @@ import {
 } from 'discord.js';
 
 import { Bot } from '../client';
-import { keyv } from '../keyv';
-import { RoleInput } from '../types/roleInput';
+import { prisma } from '../prisma';
+import { RoleInput, RoleInputs } from '../types/roleInput';
 
 import { removeUserPreviousRoles } from './removeUserPreviousRoles';
 
@@ -32,13 +32,19 @@ export async function manageRole(
     reaction.message.channel instanceof TextChannel &&
     reaction.message.author?.id === client.user?.id
   ) {
-    const messageID = reaction.message.id;
+    const messageId = reaction.message.id;
 
-    const storedRole = await keyv.get(messageID);
+    const reactionRoleMessage = await prisma.reactionRoleMessage.findUnique({
+      where: {
+        messageId,
+      },
+    });
 
-    if (!storedRole) return;
+    if (!reactionRoleMessage) return;
 
-    const roleReactions: RoleInput[] | RoleInput = JSON.parse(storedRole);
+    const roleReactions = RoleInputs.parse(
+      JSON.parse(reactionRoleMessage.data)
+    );
     let selectedRole: RoleInput | undefined;
 
     if (roleReactions instanceof Array) {
@@ -50,7 +56,7 @@ export async function manageRole(
     if (selectedRole) {
       const guild = reaction.message.guild;
       const role = guild?.roles.cache.find(
-        (r) => r.name === selectedRole?.role
+        (r) => r.name === selectedRole?.name
       );
       const member = guild?.members.cache.get(user.id);
 
