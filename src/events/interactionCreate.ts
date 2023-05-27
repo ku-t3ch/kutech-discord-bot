@@ -52,10 +52,17 @@ export default defineEventHandler({
             description = roles.emoji + ' ' + roles.role;
           }
 
-          const embed = new EmbedBuilder()
-            .setTitle(titleInput)
-            .setDescription(descriptionInput + '\n\n' + description)
-            .setColor('Aqua');
+          const embed = new EmbedBuilder().setColor('Aqua');
+
+          if (titleInput) {
+            embed.setTitle(titleInput);
+          }
+
+          if (descriptionInput) {
+            embed.setDescription(descriptionInput + '\n\n' + description);
+          } else {
+            embed.setDescription(description);
+          }
 
           const message = await interaction.reply({
             embeds: [embed],
