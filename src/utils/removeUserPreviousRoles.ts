@@ -8,6 +8,8 @@ import {
 
 import { RoleInput } from '../types/roleInput';
 
+// This didn't work if user reacted to message with multiple emoji at the same time, VERY FAST.
+// Think this is the best it can be. CarlBot is also have the same effect as this.
 export async function removeUserPreviousRoles(
   roleReactions: RoleInput | RoleInput[],
   selectedRole: RoleInput,
@@ -21,23 +23,15 @@ export async function removeUserPreviousRoles(
       : roleReactions.name == r.name
   );
 
-  if (previousRole) {
-    // Find all previous roles of the user and remove roles and reactions
-    previousRole.forEach(async (r) => {
-      // Get the `RoleInput`
-      const role =
-        roleReactions instanceof Array
-          ? roleReactions.find((rr) => rr.name == r.name)
-          : roleReactions;
-
-      if (role) {
+  if (roleReactions instanceof Array) {
+    roleReactions.forEach((role) => {
+      if (previousRole?.find((r) => r.name === role.name)) {
         console.log(
           `[ROLE] ${user.tag} switch role from ${role.emoji} ${role.name} to ${selectedRole?.emoji} ${selectedRole?.name}`
         );
-        // Remove user reactions
-        reaction.message.reactions.resolve(role.emoji)?.users.remove(user.id);
-        // Remove user roles
-        await member?.roles.remove(r); // Remove existing roles
+        return reaction.message.reactions
+          .resolve(role.emoji)
+          ?.users.remove(user.id);
       }
     });
   }

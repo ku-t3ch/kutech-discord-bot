@@ -79,11 +79,11 @@ export async function manageRole(
           await member?.roles.remove(role);
         }
 
-        console.log(
-          `[ROLE] ${action === 'add' ? 'Added' : 'Removed'} role ${
-            selectedRole.emoji
-          } ${role?.name} from user ${member?.user.tag}`
-        );
+        // console.log(
+        //   `[ROLE] ${action === 'add' ? 'Added' : 'Removed'} role ${
+        //     selectedRole.emoji
+        //   } ${role?.name} from user ${member?.user.tag}`
+        // );
       } catch (error) {
         console.error('Error removing role:', error);
       }
