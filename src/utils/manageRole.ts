@@ -10,6 +10,8 @@ import { Bot } from '../client';
 import { keyv } from '../keyv';
 import { RoleInput } from '../types/roleInput';
 
+import { removeUserPreviousRoles } from './removeUserPreviousRoles';
+
 export async function manageRole(
   client: Bot,
   reaction: MessageReaction | PartialMessageReaction,
@@ -59,6 +61,13 @@ export async function manageRole(
 
       try {
         if (action === 'add') {
+          await removeUserPreviousRoles(
+            roleReactions,
+            selectedRole,
+            member,
+            user,
+            reaction
+          );
           await member?.roles.add(role);
         } else {
           await member?.roles.remove(role);
@@ -66,8 +75,8 @@ export async function manageRole(
 
         console.log(
           `[ROLE] ${action === 'add' ? 'Added' : 'Removed'} role ${
-            role?.name
-          } from user ${member?.user.tag}`
+            selectedRole.emoji
+          } ${role?.name} from user ${member?.user.tag}`
         );
       } catch (error) {
         console.error('Error removing role:', error);
