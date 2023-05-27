@@ -1,6 +1,5 @@
 import {
   ActionRowBuilder,
-  GuildChannel,
   ModalBuilder,
   TextInputBuilder,
   TextInputStyle,

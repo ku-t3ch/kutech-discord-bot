@@ -1,19 +1,10 @@
-import 'dotenv/config';
-
-import {
-  Client,
-  Collection,
-  CommandInteraction,
-  IntentsBitField,
-  Partials,
-} from 'discord.js';
+import { Client, Collection, IntentsBitField, Partials } from 'discord.js';
 
 import commands from './commands';
+import { ENV } from './config';
 import events from './events';
 import { CommandHandlerConfig } from './types/command';
 import { EventHandlerConfig } from './types/event';
-
-const TOKEN = process.env.BOT_TOKEN as string;
 
 export class Bot extends Client {
   commands: Collection<string, CommandHandlerConfig> = new Collection();
@@ -31,7 +22,7 @@ export class Bot extends Client {
 
   async start() {
     this.registerModules();
-    await this.login(TOKEN);
+    await this.login(ENV.BOT_TOKEN);
   }
 
   registerModules() {

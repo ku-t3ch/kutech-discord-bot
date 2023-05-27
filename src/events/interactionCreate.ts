@@ -1,4 +1,4 @@
-import { EmbedBuilder, Events, TextChannel } from 'discord.js';
+import { EmbedBuilder, Events } from 'discord.js';
 
 import { keyv } from '../keyv';
 import { defineEventHandler } from '../types/event';
@@ -54,12 +54,6 @@ export default defineEventHandler({
           const embed = new EmbedBuilder()
             .setDescription(messageInput + '\n' + description)
             .setColor('Aqua');
-
-          const channel = client.channels.cache.get(
-            process.env.ROLE_CHANNEL_ID as string
-          );
-
-          // if (!(channel instanceof TextChannel)) return;
 
           const message = await interaction.reply({
             embeds: [embed],
