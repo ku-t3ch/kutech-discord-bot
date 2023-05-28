@@ -22,6 +22,8 @@ COPY . .
 
 COPY --from=dependencies /app/node_modules ./node_modules
 
+RUN npx prisma generate
+
 RUN npx pnpm build 
 
 # removes devDependencies
@@ -38,8 +40,10 @@ LABEL name "kutech-discord-bot"
 
 WORKDIR /app 
 
+ENV NODE_ENV production
+
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/node_modules ./node_modules
-# COPY --from=build /app/.env ./.env
+COPY --from=build /app/prisma ./prisma
 
 CMD ["node", "dist/client.js"]

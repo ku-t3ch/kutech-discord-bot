@@ -51,4 +51,4 @@ pnpm build
 pnpm start
 ```
 
-docker run --env-file=.env --name kutech-discord-bot --mount source=kutech-discord-bot-db,target=/app kutech-discord-bot
+docker run --env-file=.env.prod --name kutech-discord-bot --mount source=kutech-discord-bot-db,target=/app/prisma/data kutech-discord-bot
