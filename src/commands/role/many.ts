@@ -3,12 +3,12 @@ import { roleFormModal } from '../../utils/roleFormModal';
 
 export default defineCommandHandler({
   data: {
-    name: 'role',
-    description: 'User can pick only one role',
+    name: 'rolemany',
+    description: 'User can pick multiple roles',
   },
   execute: async (client, interaction) => {
     try {
-      const modal = roleFormModal('roleFormModal');
+      const modal = roleFormModal('roleManyFormModal');
 
       await interaction.showModal(modal);
     } catch (error) {

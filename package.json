@@ -7,7 +7,10 @@
     "dev": "tsx --watch src/client.ts",
     "build": "rimraf dist && tsc --build",
     "start": "node dist/client.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "generate": "prisma generate",
+    "migrate": "prisma db push",
+    "studio": "prisma studio"
   },
   "keywords": [],
   "author": "",

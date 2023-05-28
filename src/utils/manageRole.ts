@@ -67,13 +67,15 @@ export async function manageRole(
 
       try {
         if (action === 'add') {
-          await removeUserPreviousRoles(
-            roleReactions,
-            selectedRole,
-            member,
-            user,
-            reaction
-          );
+          if (!reactionRoleMessage.allowMany) {
+            await removeUserPreviousRoles(
+              roleReactions,
+              selectedRole,
+              member,
+              user,
+              reaction
+            );
+          }
           await member?.roles.add(role);
         } else {
           await member?.roles.remove(role);

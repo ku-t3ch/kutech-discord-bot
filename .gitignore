@@ -131,4 +131,4 @@ dist
 
 # Datastore files
 data/dev.sqlite
-./prisma/sqlite:/data
+prisma/data
